@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createRoot } from 'react-dom/client'
+import { useState } from 'react'
+import Todo from './components/todo'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const container = document.getElementById('root')
+const root = createRoot(container)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function Todos() {
+  const [todos, setTodos] = useState([
+    { text: "Clean laundry", checked: false, id: '1'},
+    { text: "Take out garbage", checked: true, id: '2'}
+  ])
+
+  console.log("todos", todos)
+  let allTodos = todos.map((todo) => {
+    return <Todo text={todo.text} checked={todo.checked} key={todo.id}/>
+  })
+
+  return(
+    <>{allTodos}</> 
+  )
+}
+
+root.render(<Todos />)
