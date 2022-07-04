@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 
 import Todo from './todo'
 
@@ -16,7 +15,6 @@ export default function List({ listId }) {
   ]
   
   useEffect(() => {
-    console.log('re rendered this')
     // These will be fetched from the server
     setTodos(fetchedTodos.filter(todo => todo.listId == params.listId))
   }, [])

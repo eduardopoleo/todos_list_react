@@ -4,10 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Lists from './components/lists'
 import List from './components/list'
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root")
-);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
