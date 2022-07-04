@@ -6,37 +6,37 @@ const container = document.getElementById('root')
 const root = createRoot(container)
 
 function Todos() {
-  const [todos, setTodos] = useState([
-    { value: "Clean laundry", checked: false},
+  const [uncheckedTodos, setUncheckedTodos] = useState([
+    { value: "Cook dinner", checked: false},
+    { value: "Feed the cat", checked: false}
+  ])
+
+  const [checkedTodos, setCheckedTodos] = useState([
+    { value: "Clean windows", checked: true},
     { value: "Take out garbage", checked: true}
   ])
 
   const [newTodo, setNewTodo] = useState('')
 
-  const onTodoChange = (event, position, property) => {
-    const todo = todos.find((todo, index) => index === position)
-    todo[property] = event.target[property]
-
-    setTodos(
-      [...todos.slice(0, position), todo, ...todos.slice(position + 1)]
-    )
+  const handleCheck = (event, position) => {
+    const todoItem = uncheckedTodos.find((todo, index) => index === position)
+    todoItem.checked = true
+    setCheckedTodos([todoItem, ...checkedTodos])
+    setUncheckedTodos([...uncheckedTodos.slice(0, position), ...uncheckedTodos.slice(position + 1)])
   }
 
-  let allTodos = todos.map((todo, index) => {
-    return <Todo 
-      text={todo.value}
-      checked={todo.checked}
-      key={index}
-      position={index}
-      onTodoChange={onTodoChange} 
-    />
-  })
+  const handleUnCheck = (event, position ) => {
+    const todoItem = checkedTodos.find((todo, index) => index === position)
+    todoItem.checked = false
+    setUncheckedTodos([...uncheckedTodos, todoItem])
+    setCheckedTodos([...checkedTodos.slice(0, position), ...checkedTodos.slice(position + 1)])
+  }
 
   const onAddNewTodo = () => {
     const newTodoEntry = { value: newTodo, checked: false }
 
-    setTodos(
-      [newTodoEntry, ...todos]
+    setUncheckedTodos(
+      [newTodoEntry, ...uncheckedTodos]
     )
 
     setNewTodo('')
@@ -61,8 +61,31 @@ function Todos() {
       />
       <button onClick={onAddNewTodo}>Add todo</button>
       <br/>
-      {allTodos}
-    </> 
+      {
+        uncheckedTodos.map((todo, index) => {
+          return <Todo 
+            text={todo.value}
+            checked={todo.checked}
+            key={index}
+            position={index}
+            onTodoChange={handleCheck} 
+          />
+        })
+      }
+
+      <hr/>
+      {
+        checkedTodos.map((todo, index) => {
+          return <Todo 
+            text={todo.value}
+            checked={todo.checked}
+            key={index}
+            position={index}
+            onTodoChange={handleUnCheck} 
+          />
+        })
+      }
+    </>
   )
 }
 
