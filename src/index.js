@@ -5,12 +5,13 @@ import Todo from './components/todo'
 const container = document.getElementById('root')
 const root = createRoot(container)
 
-
 function Todos() {
   const [todos, setTodos] = useState([
     { value: "Clean laundry", checked: false},
     { value: "Take out garbage", checked: true}
   ])
+
+  const [newTodo, setNewTodo] = useState('')
 
   const onTodoChange = (event, position, property) => {
     const todo = todos.find((todo, index) => index === position)
@@ -31,8 +32,27 @@ function Todos() {
     />
   })
 
+  const onAddNewTodo = () => {
+    const newTodoEntry = { value: newTodo, checked: false }
+
+    setTodos(
+      [newTodoEntry, ...todos]
+    )
+
+    setNewTodo('')
+  }
+
+  const onNewTodoChanged = (event) => {
+    setNewTodo(event.target.value)
+  }
+
   return(
-    <>{allTodos}</> 
+    <>
+      <input type="text" value={newTodo} onChange={onNewTodoChanged}/>
+      <button onClick={onAddNewTodo}>Add todo</button>
+      <br/>
+      {allTodos}
+    </> 
   )
 }
 
