@@ -46,9 +46,19 @@ function Todos() {
     setNewTodo(event.target.value)
   }
 
+  const handleKeyPress = event => {
+    if (event.key === 'Enter')
+      onAddNewTodo()
+  }
+
   return(
     <>
-      <input type="text" value={newTodo} onChange={onNewTodoChanged}/>
+      <input 
+        type="text"
+        value={newTodo}
+        onChange={onNewTodoChanged}
+        onKeyPress={handleKeyPress}
+      />
       <button onClick={onAddNewTodo}>Add todo</button>
       <br/>
       {allTodos}
