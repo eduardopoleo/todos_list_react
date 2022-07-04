@@ -1,8 +1,8 @@
-export default function Todo({ text, checked, position, onTextChange }) {
+export default function Todo({ text, checked, position, onTodoChange }) {
   return(
     <>
-      <input type="checkbox" checked={checked}/>
-      <input type="text" value={text} onChange={(event) => onTextChange(event, position)}/>
+      <input type="checkbox" checked={checked} onChange={event => onTodoChange(event, position, 'checked')} />
+      <input type="text" value={text} onChange={event => onTodoChange(event, position, 'value')} />
       <br/>
     </>
   )

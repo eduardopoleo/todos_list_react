@@ -8,13 +8,13 @@ const root = createRoot(container)
 
 function Todos() {
   const [todos, setTodos] = useState([
-    { text: "Clean laundry", checked: false, position: '1'},
-    { text: "Take out garbage", checked: true, position: '2'}
+    { value: "Clean laundry", checked: false},
+    { value: "Take out garbage", checked: true}
   ])
 
-  const onTextChange = (event, position) => {
-    debugger;
-    const todo = todos.find((todo) => todo.position === position)
+  const onTodoChange = (event, position, property) => {
+    const todo = todos.find((todo, index) => index === position)
+    todo[property] = event.target[property]
 
     setTodos(
       [...todos.slice(0, position), todo, ...todos.slice(position + 1)]
@@ -23,11 +23,11 @@ function Todos() {
 
   let allTodos = todos.map((todo, index) => {
     return <Todo 
-      text={todo.text}
+      text={todo.value}
       checked={todo.checked}
       key={index}
       position={index}
-      onTextChange={onTextChange} 
+      onTodoChange={onTodoChange} 
     />
   })
 
