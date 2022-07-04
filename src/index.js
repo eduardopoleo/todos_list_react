@@ -5,15 +5,30 @@ import Todo from './components/todo'
 const container = document.getElementById('root')
 const root = createRoot(container)
 
+
 function Todos() {
   const [todos, setTodos] = useState([
-    { text: "Clean laundry", checked: false, id: '1'},
-    { text: "Take out garbage", checked: true, id: '2'}
+    { text: "Clean laundry", checked: false, position: '1'},
+    { text: "Take out garbage", checked: true, position: '2'}
   ])
 
-  console.log("todos", todos)
-  let allTodos = todos.map((todo) => {
-    return <Todo text={todo.text} checked={todo.checked} key={todo.id}/>
+  const onTextChange = (event, position) => {
+    debugger;
+    const todo = todos.find((todo) => todo.position === position)
+
+    setTodos(
+      [...todos.slice(0, position), todo, ...todos.slice(position + 1)]
+    )
+  }
+
+  let allTodos = todos.map((todo, index) => {
+    return <Todo 
+      text={todo.text}
+      checked={todo.checked}
+      key={index}
+      position={index}
+      onTextChange={onTextChange} 
+    />
   })
 
   return(
