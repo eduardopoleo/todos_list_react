@@ -9,7 +9,7 @@ export default function Lists() {
 
   useEffect(() => {
     const fetchLists = async () => {
-      let dbLists = await getDocs(collection(db, "lists"));
+      const dbLists = await getDocs(collection(db, "lists"));
       let myLists = [];
       dbLists.forEach((list) => myLists.push({ id: list.id, ...list.data() }))
       setLists(myLists)
@@ -17,17 +17,9 @@ export default function Lists() {
     fetchLists()
   }, [])
 
-  const onAddNewList = () => {
-    const newListEntry = { name: newList }
-    console.log('weird', newListEntry)
-    const saveList = async (newListEntry) => {
-      console.log('weird2', newListEntry)
-      return await addDoc(collection(db, "lists"), { ...newListEntry } );
-    }
-    const result = saveList()
-    console.log('final result ', result)
-    setLists([newListEntry, ...lists])
-
+  const onAddNewList = async () => {
+    const document = await addDoc(collection(db, "lists"), { name: newList } );
+    setLists([{ name: newList, id: document.id }, ...lists])
     setNewList('')
   }
 
