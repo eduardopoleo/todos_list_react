@@ -1,27 +1,33 @@
 import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom";
+import { db } from '../firebase'
+import { getDoc, doc, setDoc } from "firebase/firestore";
 
 import Todo from './todo'
 
 export default function List({ listId }) {
   let params = useParams();
   const [todos, setTodos] = useState([])
-  const fetchedTodos = [
-    { listId: 1, text: 'Onions', done: true },
-    { listId: 1, text: 'Carrots', done: false },
-    { listId: 2, text: 'Shoes', done: false },
-    { listId: 2, text: 'Tshirt', done: true },
-    { listId: 2, text: 'jeans', done: false }
-  ]
+  const [newTodo, setNewTodo] = useState('')
   
   useEffect(() => {
-    // These will be fetched from the server
-    setTodos(fetchedTodos.filter(todo => todo.listId == params.listId))
+    // This call does not stope execution. That's why this function returns a promise
+    // even though we write this as a sequential code this is non blocking
+    // await will only return real value inside the function because its when the actual
+    // call resolves
+    // const fetchList = async () => {
+    //   const myValue = await getDoc(doc(db, 'lists', params.listId))
+    // }
+
+     getDoc(doc(db, 'lists', params.listId)).then((list) => {
+      const dbTodos = list.data().todos
+      if (dbTodos)
+        setTodos(dbTodos)
+    })
   }, [])
 
-  const [newTodo, setNewTodo] = useState('')
-
   const handleCheck = (event, position) => {
+
     const todo = todos.find((todoItem, index) => index === position)
     todo.done = true
 
@@ -29,13 +35,16 @@ export default function List({ listId }) {
   }
 
   const onAddNewTodo = () => {
-    const newTodoEntry = { text: newTodo, done: false, listId: params.listId }
-
+    const newTodoEntry = { text: newTodo, done: false  }
     setTodos(
       [newTodoEntry, ...todos]
     )
-
     setNewTodo('')
+      
+    const listDocRef = doc(db, 'lists', params.listId)
+    setDoc(listDocRef, {
+      todos: [...todos, newTodoEntry]
+    })
   }
 
   const onNewTodoChanged = (event) => {
