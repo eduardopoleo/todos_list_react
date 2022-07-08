@@ -44,7 +44,7 @@ export default function List({ listId }) {
     const listDocRef = doc(db, 'lists', params.listId)
     setDoc(listDocRef, {
       todos: [...todos, newTodoEntry]
-    })
+    },  {merge: true })
   }
 
   const onNewTodoChanged = (event) => {
