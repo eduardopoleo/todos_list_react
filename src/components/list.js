@@ -28,7 +28,7 @@ export default function List({ listId }) {
 
   const handleCheck = (event, position) => {
     const todo = todos.find((todoItem, index) => index === position)
-    todo.done = todo.done ? false : true
+    todo.done = !todo.done
     const newTodos = [...todos.slice(0, position), todo, ...todos.slice(position + 1)]
     setTodos(newTodos)
     const listDocRef = doc(db, 'lists', params.listId)
