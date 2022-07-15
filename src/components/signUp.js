@@ -1,13 +1,16 @@
 import { useRef, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
   const { signUp } = useAuth()
+  const navigate = useNavigate()
 
   const[error, setError] = useState()
+  const[loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,11 +21,15 @@ export default function SignUp() {
 
     try {
       setError('')
+      setLoading(true)
       await signUp(emailRef.current.value, passwordRef.current.value)
+      setLoading(false)
     } catch (error) {
-      debugger;
-      return setError(error.message)      
+      setLoading(false)
+      setError(error.message)      
     }
+   
+    navigate('/lists')
   }
 
   return(
@@ -56,7 +63,7 @@ export default function SignUp() {
 
         <br />
         <br />
-        <input type="submit"/>
+        <input type="submit" disabled={loading}/>
       </form> 
     </>
   )

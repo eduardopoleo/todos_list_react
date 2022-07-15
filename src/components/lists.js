@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from '../firebase'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Lists() {
   const [lists, setLists] = useState([])
   const [newList, setNewList] = useState('')
+  const { currentUser } = useAuth()
+  const hello = "hello string"
 
   // This does not need to be real time at least not until we have share
   // todos list
