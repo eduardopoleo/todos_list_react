@@ -18,7 +18,6 @@ export default function List({ listId }) {
     // const fetchList = async () => {
     //   const myValue = await getDoc(doc(db, 'lists', params.listId))
     // }
-
      getDoc(doc(db, 'lists', params.listId)).then((list) => {
       const dbTodos = list.data().todos
       if (dbTodos)

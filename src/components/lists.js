@@ -2,13 +2,10 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from '../firebase'
-import { useAuth } from '../contexts/AuthContext'
 
 export default function Lists() {
   const [lists, setLists] = useState([])
   const [newList, setNewList] = useState('')
-  const { currentUser } = useAuth()
-  const hello = "hello string"
 
   // This does not need to be real time at least not until we have share
   // todos list
@@ -46,11 +43,11 @@ export default function Lists() {
       <button onClick={handleAddNewList}>Add List</button>
       <br/>
       {
-        lists.map(list => <Link
-          to={`/lists/${list.id}`}
-          key={list.id}>
-          <div>{list.name}</div>
-        </Link>)
+        lists.map(list => 
+          <div  key={list.id}>
+            <Link to={`/lists/${list.id}`}>{list.name}</Link>
+          </div>
+        )
       }
     </>
   )

@@ -14,10 +14,8 @@ root.render(
         <Routes>
           <Route path="/" element={<Lists />} />
             <Route path="sign_up" element={<SignUp/>}/>
-            <Route path="/lists" element={<Lists />}>
-              <Route path=":listId" element={<List />}>
-            </Route>
-          </Route>
+            <Route path="lists/:listId" element={<List />} />
+            <Route path="lists" element={<Lists />}/>
         </Routes>
       </AuthProvider>
     </BrowserRouter >
