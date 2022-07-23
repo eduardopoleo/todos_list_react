@@ -11,6 +11,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const[currentUser, setCurrentUser] = useState()
+  const[loading, setLoading] = useState(true)
   
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password)
@@ -22,6 +23,7 @@ export function AuthProvider({ children }) {
     // This pairs up really nicely with useeffect because it has
     // the same behaviour
     return onAuthStateChanged(auth, user => {
+      setLoading(false)
       setCurrentUser(user)
     })
   }, [])
@@ -33,7 +35,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
