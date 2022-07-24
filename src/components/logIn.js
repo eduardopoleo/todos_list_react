@@ -1,4 +1,31 @@
-export default Login() {
+import { useRef, useState } from 'react'
+import { useAuth } from "../contexts/AuthContext"
+import { useNavigate } from 'react-router-dom'
+
+export default function Login() {
+  const emailRef = useRef()
+  const passwordRef = useRef()
+  const navigate = useNavigate()
+  const { logIn } = useAuth()
+
+  const[error, setError] = useState()
+  const[loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      setError('')
+      setLoading(true)
+      await logIn(emailRef.current.value, passwordRef.current.value)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      setError(error.message)      
+    }
+    navigate('/lists')
+  }
+
   return(
     <>
     <h1>Log In</h1>
@@ -19,15 +46,6 @@ export default Login() {
         type="password"
         ref={passwordRef}
       />
-      <br/>
-      <label>Password Confirmation</label>
-      <br/>
-      <input
-        name="passwordConfirmation"
-        type="password"
-        ref={passwordConfirmRef}
-      />
-
       <br />
       <br />
       <input type="submit" disabled={loading}/>

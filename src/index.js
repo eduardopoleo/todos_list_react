@@ -4,7 +4,7 @@ import { BrowserRouter , Route, Routes } from "react-router-dom";
 import Lists from './components/lists'
 import List from './components/list'
 import SignUp from './components/signUp'
-import LogIn from './components/logIn'
+import Login from './components/login'
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/layout";
 

@@ -12,7 +12,7 @@ export default function Layout({ children }) {
           <li>About</li>
           {currentUser && <li><a onClick={logout}>Log Out</a></li>}
           {currentUser && <li>{currentUser.email}</li>}
-          {!currentUser && <li> <Link to="login"></Link>Log In</li>}
+          {!currentUser && <li> <Link to="login">Log In</Link></li>}
           {!currentUser && <li> <Link to="sign_up">Sign Up</Link></li>}
         </ul>      
       </nav>
