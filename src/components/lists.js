@@ -13,23 +13,20 @@ export default function Lists() {
   // todos list
   useEffect(() => {
     const fetchLists = async () => {
-      const user = await currentUser
       const listsQuery = query(
         collection(db, "lists"),
-        where("userId", "==", user.uid)
+        where("userId", "==", currentUser.uid)
       )
       const dbLists = await getDocs(listsQuery)
       let myLists = [];
-      dbLists.forEach((list) => myLists.push({ id: list.id, ...list.data() }))
+      dbLists.forEach(list => myLists.push({ id: list.id, ...list.data() }))
       setLists(myLists)
     }
     fetchLists()
   }, [])
 
   const handleAddNewList = async () => {
-    const user = await currentUser
-
-    const document = await addDoc(collection(db, "lists"), { name: newList, userId: user.uid } );
+    const document = await addDoc(collection(db, "lists"), { name: newList, userId: currentUser.uid } );
     setLists([{ name: newList, id: document.id }, ...lists])
     setNewList('')
   }

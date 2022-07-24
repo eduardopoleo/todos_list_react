@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase'
 // see if we can use the firebase file as a proxy for all the method
-import { createUserWithEmailAndPassword, onAuthStateChanged  } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
+} from 'firebase/auth'
 
 const AuthContext = React.createContext()
 
@@ -15,6 +20,14 @@ export function AuthProvider({ children }) {
   
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password)
+  }
+
+  function login(email, password) {
+    return signInWithEmailAndPassword(auth, email, password)
+  }
+
+  function logout(){
+    return signOut(auth)
   }
   
   useEffect(() => {
@@ -30,7 +43,9 @@ export function AuthProvider({ children }) {
   
   const value =  {
     currentUser,
-    signUp
+    signUp,
+    login,
+    logout
   }
 
   return (
