@@ -1,20 +1,10 @@
-import { Children } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { Link } from 'react-router-dom'
+import NavBar from './NavBar';
 
 export default function Layout({ children }) {
-  const { currentUser, logout } = useAuth()
-
   return(
     <>
       <nav>
-        <ul>
-          <li>About</li>
-          {currentUser && <li><a onClick={logout}>Log Out</a></li>}
-          {currentUser && <li>{currentUser.email}</li>}
-          {!currentUser && <li> <Link to="login">Log In</Link></li>}
-          {!currentUser && <li> <Link to="sign_up">Sign Up</Link></li>}
-        </ul>      
+        <NavBar />
       </nav>
       <br/>
       <br/>
