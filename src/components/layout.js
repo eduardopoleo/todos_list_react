@@ -1,4 +1,5 @@
 import NavBar from './NavBar';
+import './application.css';
 
 export default function Layout({ children }) {
   return(
@@ -11,7 +12,9 @@ export default function Layout({ children }) {
       <main>{children}</main>
       <br/>
       <br/>
-      <div>This is some sort of footer</div>
+      <footer className='footer mt-auto py-3 bg-light'>
+        <span className="text-muted">Place sticky footer content here.</span>
+      </footer>
     </>
   )
 }
