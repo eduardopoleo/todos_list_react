@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
 import { useAuth } from "../contexts/AuthContext"
 import { useNavigate } from 'react-router-dom'
-import { Button, Form, Container, Row, Col } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import ContentGrid from './ContentGrid';
 
 export default function Login() {
   const emailRef = useRef()
@@ -28,28 +29,22 @@ export default function Login() {
   }
 
   return(
-    <Container>
-      <Row>
-        <Col></Col>
-        <Col>
-          <Form onSubmit={handleSubmit}>
-            <h1>Log In</h1>
-            {error && <span>{error}</span>}
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control name="email" type="email" placeholder="example@.com" ref={emailRef}/>
-            </Form.Group>
+    <ContentGrid>
+      <Form onSubmit={handleSubmit}>
+        <h1>Log In</h1>
+        {error && <span>{error}</span>}
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control name="email" type="email" placeholder="example@.com" ref={emailRef}/>
+        </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control name="password" type="password" placeholder="Choose a strong password" ref={passwordRef}/>
-            </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control name="password" type="password" placeholder="Choose a strong password" ref={passwordRef}/>
+        </Form.Group>
 
-            <Button variant="primary" type="submit">Log In</Button>
-          </Form>
-        </Col>
-        <Col></Col>
-      </Row>
-    </Container>
+        <Button variant="primary" type="submit">Log In</Button>
+      </Form>
+    </ContentGrid>
   )  
 }
