@@ -1,10 +1,9 @@
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  margin-top: auto!important;
 }
 
 .large-form-input {
   height: 60px;
   font-size: 40px !important;
 }
+
