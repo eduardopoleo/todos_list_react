@@ -9,9 +9,8 @@ import ContentGrid from './ContentGrid';
 export default function Lists() {
   const [error, setError] = useState('')
   const [lists, setLists] = useState([])
-  const [newList, setNewList] = useState('')
   const { currentUser } = useAuth()
-  const listRef = useRef()
+  const newListRef = useRef()
 
   // This does not need to be real time at least not until we have share
   // todos list
@@ -34,34 +33,30 @@ export default function Lists() {
 
     try {
       setError('')
-      const document = await addDoc(collection(db, "lists"), { name: newList, userId: currentUser.uid } );
-      setLists([{ name: newList, id: document.id }, ...lists])
-      setNewList('')
+      const document = await addDoc(collection(db, "lists"), { name: newListRef.current.value, userId: currentUser.uid } );
+      setLists([{ name: newListRef.current.value, id: document.id }, ...lists])
+      newListRef.current.value = ''
     } catch (error) {
       setError(error.message)      
     }
   }
 
-  const handleNewListInputChanged = (event) => {
-    setNewList(event.target.value)
-  }
-
   const handleKeyPress = event => {
     if (event.key === 'Enter')
-    handleSubmit(event)
+      handleSubmit(event)
   }
   return(
     <ContentGrid>
+      <h1>Add List</h1>
       <Form onSubmit={handleSubmit}>
         {error && <span>{error}</span>}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
             name="lists" 
             type="text"
-            placeholder="Add a list"
-            ref={listRef}
+            className={"large-form-input"}
+            ref={newListRef}
             onKeyPress={handleKeyPress}
-            onChange={handleNewListInputChanged}
           />
         </Form.Group>
       </Form>

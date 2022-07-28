@@ -3,3 +3,8 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+.large-form-input {
+  height: 60px;
+  font-size: 40px !important;
+}
