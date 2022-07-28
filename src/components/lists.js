@@ -64,9 +64,7 @@ export default function Lists() {
             onChange={handleNewListInputChanged}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">Add List</Button>
       </Form>
-      <br/>
       {
         lists.map(list => 
           <div  key={list.id}>
