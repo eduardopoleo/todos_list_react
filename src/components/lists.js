@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from '../firebase'
 import { useAuth } from '../contexts/AuthContext';
-import { Button, Form } from 'react-bootstrap';
+import { ListGroup, Form, Badge } from 'react-bootstrap';
+
 import ContentGrid from './ContentGrid';
 
 export default function Lists() {
@@ -60,13 +61,13 @@ export default function Lists() {
           />
         </Form.Group>
       </Form>
-      {
-        lists.map(list => 
-          <div  key={list.id}>
-            <Link to={`/lists/${list.id}`}>{list.name}</Link>
-          </div>
-        )
-      }
+      <ListGroup as="ol" variant="flush">
+        {lists.map(list => 
+          <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" key={list.id}>
+            <div><Link to={`/lists/${list.id}`}>{list.name}</Link></div>
+            <Badge bg="primary" pill>14</Badge>
+          </ListGroup.Item>)}
+      </ListGroup> 
     </ContentGrid>
   )
 }
