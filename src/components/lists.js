@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from '../firebase'
 import { useAuth } from '../contexts/AuthContext';
+import { Button, Form } from 'react-bootstrap';
+import ContentGrid from './ContentGrid';
 
 export default function Lists() {
+  const [error, setError] = useState('')
   const [lists, setLists] = useState([])
   const [newList, setNewList] = useState('')
   const { currentUser } = useAuth()
+  const listRef = useRef()
 
   // This does not need to be real time at least not until we have share
   // todos list
@@ -25,10 +29,17 @@ export default function Lists() {
     fetchLists()
   }, [])
 
-  const handleAddNewList = async () => {
-    const document = await addDoc(collection(db, "lists"), { name: newList, userId: currentUser.uid } );
-    setLists([{ name: newList, id: document.id }, ...lists])
-    setNewList('')
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    try {
+      setError('')
+      const document = await addDoc(collection(db, "lists"), { name: newList, userId: currentUser.uid } );
+      setLists([{ name: newList, id: document.id }, ...lists])
+      setNewList('')
+    } catch (error) {
+      setError(error.message)      
+    }
   }
 
   const handleNewListInputChanged = (event) => {
@@ -37,16 +48,24 @@ export default function Lists() {
 
   const handleKeyPress = event => {
     if (event.key === 'Enter')
-    handleAddNewList()
+    handleSubmit(event)
   }
   return(
-    <>
-      <input 
-        type="text"
-        value={newList}
-        onChange={handleNewListInputChanged}
-        onKeyPress={handleKeyPress}/>
-      <button onClick={handleAddNewList}>Add List</button>
+    <ContentGrid>
+      <Form onSubmit={handleSubmit}>
+        {error && <span>{error}</span>}
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control
+            name="lists" 
+            type="text"
+            placeholder="Add a list"
+            ref={listRef}
+            onKeyPress={handleKeyPress}
+            onChange={handleNewListInputChanged}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">Add List</Button>
+      </Form>
       <br/>
       {
         lists.map(list => 
@@ -55,6 +74,6 @@ export default function Lists() {
           </div>
         )
       }
-    </>
+    </ContentGrid>
   )
 }

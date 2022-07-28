@@ -8,6 +8,7 @@ import Login from './components/login'
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/layout";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,8 +19,8 @@ root.render(
         <Layout>
           <Routes>
             <Route path="/" element={<PrivateRoute><Lists/></PrivateRoute>} />
-            <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/login" element={<Login/>}/>
+            <Route path="/signup" element={<PublicRoute><SignUp/></PublicRoute>}/>
+            <Route path="/login" element={<PublicRoute><Login/></PublicRoute>}/>
             <Route path="/lists/:listId" element={<PrivateRoute><List/></PrivateRoute>} />
             <Route path="/lists" element={<PrivateRoute><Lists/></PrivateRoute>}/>
           </Routes>
