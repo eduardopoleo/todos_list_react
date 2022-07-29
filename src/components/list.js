@@ -57,7 +57,9 @@ export default function List() {
   return(
     <>
       <ContentGrid>
-        <h1>Add List</h1>
+        <h1 className='text-center'>{list.name}</h1>
+        <br/>
+        <h3>Add Todo</h3>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
