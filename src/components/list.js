@@ -1,28 +1,26 @@
-import { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react'
+import { useParams } from "react-router-dom"
 import { db } from '../firebase'
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore"
+import ContentGrid from './ContentGrid'
+import { Form } from 'react-bootstrap';
 
 import Todo from './todo'
 
-export default function List({ listId }) {
+export default function List() {
   let params = useParams();
   const [todos, setTodos] = useState([])
-  const [newTodo, setNewTodo] = useState('')
+  const [list, setList] = useState({})
+  const newTodoRef = useRef()
+
+  const fetchListInfo = async () => {
+    const dbList = await getDoc(doc(db, 'lists', params.listId))
+    setList(dbList.data())
+    setTodos(dbList.data().todos)
+  }
   
   useEffect(() => {
-    // This call does not stope execution. That's why this function returns a promise
-    // even though we write this as a sequential code this is non blocking
-    // await will only return real value inside the function because its when the actual
-    // call resolves
-    // const fetchList = async () => {
-    //   const myValue = await getDoc(doc(db, 'lists', params.listId))
-    // }
-     getDoc(doc(db, 'lists', params.listId)).then((list) => {
-      const dbTodos = list.data().todos
-      if (dbTodos)
-        setTodos(dbTodos)
-    })
+    fetchListInfo()
   }, [])
 
   const handleCheck = (event, position) => {
@@ -36,49 +34,54 @@ export default function List({ listId }) {
     },  { merge: true })
   }
 
-  const onAddNewTodo = () => {
-    const newTodoEntry = { text: newTodo, done: false  }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    const newTodoEntry = { text: newTodoRef.current.value, done: false  }
     setTodos(
       [newTodoEntry, ...todos]
     )
-    setNewTodo('')
+    newTodoRef.current.value = ''
       
     const listDocRef = doc(db, 'lists', params.listId)
     setDoc(listDocRef, {
       todos: [...todos, newTodoEntry]
-    },  {merge: true })
-  }
-
-  const onNewTodoChanged = (event) => {
-    setNewTodo(event.target.value)
+    },  { merge: true })
   }
 
   const handleKeyPress = event => {
     if (event.key === 'Enter')
-      onAddNewTodo()
+      handleSubmit(event)
   }
 
   return(
     <>
-      <input 
-        type="text"
-        value={newTodo}
-        onChange={onNewTodoChanged}
-        onKeyPress={handleKeyPress}
-      />
-      <button onClick={onAddNewTodo}>Add todo</button>
-      <br/>
-      {
-        todos.map((todo, index) => {
-          return <Todo 
-            text={todo.text}
-            checked={todo.done}
-            key={index}
-            position={index}
-            onTodoChange={handleCheck} 
-          />
-        })
-      }
+      <ContentGrid>
+        <h1>Add List</h1>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Control
+              name="new-todo"
+              type="text"
+              className={"large-form-input"}
+              ref={newTodoRef}
+              onKeyPress={handleKeyPress}
+            />
+          </Form.Group>
+        </Form>
+        <br/>
+        {
+          todos.map((todo, index) => {
+            return <Todo 
+              text={todo.text}
+              checked={todo.done}
+              key={index}
+              position={index}
+              onTodoChange={handleCheck} 
+            />
+          })
+        }
+      </ContentGrid>
     </>
   )
 }
