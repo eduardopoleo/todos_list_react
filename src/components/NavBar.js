@@ -21,13 +21,13 @@ export default function NavBar() {
           <Nav>
             {currentUser ? (
               <>
-                <Nav.Link href="#home"><Link to="/lists">Lists</Link></Nav.Link>
-                <Nav.Link href="#home"><a href="#" onClick={logout}>Log Out</a></Nav.Link>
+                <Link className='nav-link' to="/lists">Lists</Link>
+                <a className='nav-link' href="#" onClick={logout}>Log Out</a>
               </>
             ) : (
               <>
-                <Nav.Link href="#home"><Link to="/login">Log In</Link></Nav.Link>
-                <Nav.Link href="#home"><Link to="/signup">Sign Up</Link></Nav.Link>
+                <Link className='nav-link' to="/login">Log In</Link>
+                <Link className='nav-link' to="/signup">Sign Up</Link>
               </>
             )}
           </Nav>

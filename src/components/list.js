@@ -16,7 +16,8 @@ export default function List() {
   const fetchListInfo = async () => {
     const dbList = await getDoc(doc(db, 'lists', params.listId))
     setList(dbList.data())
-    setTodos(dbList.data().todos)
+    if (dbList.data().todos)
+      setTodos(dbList.data().todos)
   }
   
   useEffect(() => {
@@ -42,7 +43,6 @@ export default function List() {
       [newTodoEntry, ...todos]
     )
     newTodoRef.current.value = ''
-      
     const listDocRef = doc(db, 'lists', params.listId)
     setDoc(listDocRef, {
       todos: [...todos, newTodoEntry]
