@@ -46,6 +46,14 @@ export default function Lists() {
     if (event.key === 'Enter')
       handleSubmit(event)
   }
+
+  const todosCount = (list) => {
+    if (!list.todos)
+      return 0
+
+    return list.todos.length
+  }
+
   return(
     <ContentGrid>
       <h1>Add List</h1>
@@ -65,7 +73,7 @@ export default function Lists() {
         {lists.map(list => 
           <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" key={list.id}>
             <div><Link to={`/lists/${list.id}`}>{list.name}</Link></div>
-            <Badge bg="primary" pill>14</Badge>
+            <Badge bg="primary" pill>{todosCount(list)}</Badge>
           </ListGroup.Item>)}
       </ListGroup> 
     </ContentGrid>

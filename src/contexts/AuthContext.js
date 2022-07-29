@@ -8,12 +8,15 @@ import {
   signOut
 } from 'firebase/auth'
 
+// 1) create context
 const AuthContext = React.createContext()
 
+// 3) last UseContext to declare that we want to use the context
 export function useAuth() {
   return useContext(AuthContext)
 }
 
+// 2) Create the provider with respective vallues
 export function AuthProvider({ children }) {
   const[currentUser, setCurrentUser] = useState()
   const[loading, setLoading] = useState(true)
@@ -41,6 +44,7 @@ export function AuthProvider({ children }) {
     })
   }, [])
   
+  // The provider will include the values to pass down
   const value =  {
     currentUser,
     signUp,
@@ -48,6 +52,7 @@ export function AuthProvider({ children }) {
     logout
   }
 
+  // These values are passed as value={}
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
