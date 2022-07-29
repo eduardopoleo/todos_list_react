@@ -73,7 +73,7 @@ export default function List() {
         </Form>
         <br/>
         {
-          todos.map((todo, index) => {
+          todos && todos.map((todo, index) => {
             return <Todo 
               text={todo.text}
               checked={todo.done}
